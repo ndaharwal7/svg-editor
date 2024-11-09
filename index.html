@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional SVG Infographic Editor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/classic.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="sidebar">
+        <div class="panel">
+            <div class="panel-title">
+                <span>Layers & Elements</span>
+                <button class="btn btn-icon" onclick="editor.togglePanel(this)">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+            <div class="panel-content expanded">
+                <div id="element-list" class="element-list"></div>
+                <div class="btn-group" style="margin-top: 10px;">
+                    <button class="btn" onclick="editor.groupSelected()">
+                        <i class="fas fa-object-group"></i> Group
+                    </button>
+                    <button class="btn" onclick="editor.ungroupSelected()">
+                        <i class="fas fa-object-ungroup"></i> Ungroup
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel">
+            <div class="panel-title">
+                <span>Properties</span>
+                <button class="btn btn-icon" onclick="editor.togglePanel(this)">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+            <div class="panel-content expanded">
+                <div id="properties-panel"></div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-title">
+                <span>Fill & Stroke</span>
+                <button class="btn btn-icon" onclick="editor.togglePanel(this)">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+            <div class="panel-content expanded">
+                <div id="style-panel"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <div class="toolbar">
+            <div class="toolbar-group">
+                <button class="btn" onclick="editor.undo()">
+                    <i class="fas fa-undo"></i>
+                </button>
+                <button class="btn" onclick="editor.redo()">
+                    <i class="fas fa-redo"></i>
+                </button>
+            </div>
+
+            <div class="toolbar-group">
+                <div class="shape-tool">
+                    <button class="btn">
+                        <i class="fas fa-shapes"></i>
+                        <i class="fas fa-caret-down"></i>
+                    </button>
+                    <div class="shape-submenu">
+                        <button class="btn" onclick="editor.addRect()">
+                            <i class="fas fa-square"></i> Rectangle
+                        </button>
+                        <button class="btn" onclick="editor.addCircle()">
+                            <i class="fas fa-circle"></i> Circle
+                        </button>
+                        <button class="btn" onclick="editor.addEllipse()">
+                            <i class="fas fa-circle"></i> Ellipse
+                        </button>
+                        <button class="btn" onclick="editor.addPolygon()">
+                            <i class="fas fa-draw-polygon"></i> Polygon
+                        </button>
+                        <button class="btn" onclick="editor.addStar()">
+                            <i class="fas fa-star"></i> Star
+                        </button>
+                    </div>
+                </div>
+                <button class="btn" onclick="editor.addText()">
+                    <i class="fas fa-font"></i>
+                </button>
+                <button class="btn" onclick="editor.startPath()">
+                    <i class="fas fa-pen"></i>
+                </button>
+            </div>
+
+            <div class="toolbar-group">
+                <button class="btn" onclick="editor.toggleGrid()">
+                    <i class="fas fa-border-all"></i>
+                </button>
+                <button class="btn" onclick="editor.toggleSnap()">
+                    <i class="fas fa-magnet"></i>
+                </button>
+            </div>
+
+            <div class="toolbar-group">
+                <button class="btn" onclick="editor.importSVG()">
+                    <i class="fas fa-file-import"></i> Import
+                </button>
+                <button class="btn" onclick="editor.exportSVG()">
+                    <i class="fas fa-file-export"></i> Export
+                </button>
+            </div>
+        </div>
+        
+        <div id="workspace">
+            <div id="svg-container"></div>
+            <div id="grid" class="grid"></div>
+            <div id="transform-controls" class="transform-controls"></div>
+            <div id="snap-lines"></div>
+        </div>
+    </div>
+
+    <!-- Import Dialog Template -->
+    <template id="import-dialog">
+        <div class="dialog-overlay">
+            <div class="dialog">
+                <div class="dialog-header">
+                    <h3>Import SVG</h3>
+                    <button class="btn btn-icon" onclick="this.closest('.dialog-overlay').remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="dialog-content">
+                    <textarea id="svg-import" rows="10" class="property-input" 
+                              placeholder="Paste SVG code here..."></textarea>
+                </div>
+                <div class="btn-group">
+                    <button class="btn" onclick="editor.handleSVGImport()">Import</button>
+                    <button class="btn" onclick="this.closest('.dialog-overlay').remove()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.1/svg.min.js"></script>
+    <script src="editor.js"></script>
+</body>
+</html>
